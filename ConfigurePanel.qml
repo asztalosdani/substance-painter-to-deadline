@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 import AlgWidgets 1.0
+import "deadline.js" as Deadline
 
 AlgDialog {
     id: configureDialog
@@ -18,9 +19,45 @@ AlgDialog {
     maximumHeight: height
 
     onAccepted: {
-        alg.settings.setValue("Host", hostTextEdit.text);
-        alg.settings.setValue("Port", portTextEdit.text);
-        alg.settings.setValue("User", usernameTextEdit.text);
+        internal.save()
+    }
+
+    QtObject {
+        id: internal
+
+        function save() {
+            alg.settings.setValue("Host", hostTextEdit.text)
+            alg.settings.setValue("Port", portTextEdit.text)
+            alg.settings.setValue("User", usernameTextEdit.text)
+        }
+
+        function testConnection() {
+            testButton.enabled = false
+            Deadline.getUser(usernameTextEdit.text, onSuccess, onError)
+        }
+
+        function onSuccess(user) {
+            if (user.length == 0) {
+                messageDialog.title = "Warning"
+                messageDialog.text = "Connection to deadline was successful, but no such user found"
+                messageDialog.icon = StandardIcon.Warning
+            } else {
+                messageDialog.title = "Success"
+                messageDialog.text = "Connection to deadline was successful, user found"
+                messageDialog.icon = StandardIcon.Information
+            }
+            messageDialog.open()
+            testButton.enabled = true
+        }
+
+        function onError() {
+            messageDialog.title = "Error"
+            messageDialog.text = "Connection to deadline was not successful"
+            messageDialog.icon = StandardIcon.Critical
+            messageDialog.open()
+            testButton.enabled = true
+        }
+
     }
 
     Rectangle {
@@ -30,13 +67,6 @@ AlgDialog {
         anchors.margins: 12
         color: "transparent"
         clip: true
-
-        function reload() {
-            path.reload()
-            launchPhotoshopCheckBox.reload()
-            paddingCheckBox.reload()
-            bitDepthComboBox.reload()
-        }
 
         GridLayout {
             columns: 2
@@ -71,16 +101,25 @@ AlgDialog {
             }
 
             AlgButton {
+                id: testButton
                 Layout.row: 3
                 Layout.column: 1
                 text: "Test connection"
                 anchors {
                     right: parent.right
                 }
+                onClicked: {
+                    internal.save()
+                    internal.testConnection()
+                }
             }
-
-
         }
     }
+
+    MessageDialog {
+        id: messageDialog
+        visible: false
+    }
+
 
 }
