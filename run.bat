@@ -1,1 +1,0 @@
-"c:\Program Files\Allegorithmic\Substance Painter\Substance Painter.exe" "x:\main\Personal\DavidF\Substance\scrolls_v2.spp" --debug="sajt"
