@@ -79,10 +79,15 @@ AlgDialog
         }
 
         function submit() {
+            var textureSets = []
             for (var i = 0; i < dataModel.count; i++) {
                 var textureSet = dataModel.get(i)
                 alg.log.info(textureSet.name + " " + textureSet.selected)
+                if (textureSet.selected) {
+                    textureSets.push(textureSet.name)
+                }
             }
+            var bitDepth = bitDepthComboBox.currentText.split("bit")[0]
 
             var jobInfo = {
                 Plugin: "SubstancePainter",
@@ -115,7 +120,9 @@ AlgDialog
                 ProjectFile: alg.project.url(),
                 Preset: presetPath.text,
                 ExportPath: exportPath.text,
-                Format: format.currentText
+                Format: format.currentText,
+                TextureSets: textureSets.join(","),
+                BitDepth: bitDepth
             }
             Deadline.submitJob(jobInfo, pluginInfo, onJobSubmitted)
         }
@@ -337,12 +344,13 @@ AlgDialog
                     model: ["bmp", "ico", "jpeg", "jng", "pbm", "pgm", "ppm", "png", "targa", "tiff", "wbmp", "xpm", "gif", "hdr", "exr", "j2k", "jpeg-2000", "pfm", "psd"]
                 }
                 AlgComboBox {
-                    id: bitDepth
+                    id: bitDepthComboBox
                     model: ["8bit", "16bit", "32bit"]
                 }
             }
 
 
+            AlgLabel { text: "Texture Sets"}
             ListView {
                 width: 180; height: 200
                 model: ListModel {id: dataModel}
