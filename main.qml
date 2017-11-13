@@ -14,7 +14,9 @@ PainterPlugin {
 				// This can be used to execute script code at startup,
 				// once the full QML environment has been established.
 				alg.log.info("Component.onCompleted");
-				submitDialog.open();
+
+                var qmlToolbar = alg.ui.addToolBarWidget( "toolbar.qml" )
+                qmlToolbar.windowReference = submitDialog
 		}
 
 		onTick: {
