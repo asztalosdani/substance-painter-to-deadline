@@ -170,87 +170,89 @@ AlgDialog
             }
 
             GridLayout {
-                columns: 3
+                columns: 2
 
-                AlgLabel { text: "Pool"; Layout.row: 0; Layout.column: 0}
+                AlgLabel { text: "Pool"}
                 AlgComboBox {
                     id: pool
-                    Layout.row: 0; Layout.column: 1
                     model: ListModel {id: poolModel}
                 }
 
-
-                AlgLabel { text: "Secondary Pool"; Layout.row: 1; Layout.column: 0}
+                AlgLabel { text: "Secondary Pool"}
                 AlgComboBox {
                     id: secondaryPool
-                    Layout.row: 1; Layout.column: 1
                     model: ListModel {id: secondaryPoolModel}
                 }
 
-                AlgLabel { text: "Group"; Layout.row: 2; Layout.column: 0}
+                AlgLabel { text: "Group"}
                 AlgComboBox {
                     id: group
-                    Layout.row: 2; Layout.column: 1
                     model: ListModel {id: groupModel}
                 }
 
-                AlgLabel { text: "Priority"; Layout.row: 3; Layout.column: 0}
+                AlgLabel { text: "Priority"}
                 AlgSpinBox {
                     id: priority
-                    Layout.row: 3; Layout.column: 1
                     minValue: 0
                     maxValue: 100
                     precision: 0
                     value: 50
                 }
 
-                AlgLabel { text: "Task Timeout"; Layout.row: 4; Layout.column: 0}
-                AlgSpinBox {
-                    id: taskTimeout
-                    Layout.row: 4; Layout.column: 1
-                    minValue: 0
-                    maxValue: 1000000
-                    precision: 0
-                    value: 0
-                }
-                AlgCheckBox {
-                    id: enableAutoTaskTimeout
-                    text: "Enable Auto Task Timeout"
+                AlgLabel { text: "Task Timeout"}
+                RowLayout {
+                    Layout.fillWidth: true
+                    AlgSpinBox {
+                        id: taskTimeout
+                        minValue: 0
+                        maxValue: 1000000
+                        precision: 0
+                        value: 0
+                    }
+                    AlgCheckBox {
+                        id: enableAutoTaskTimeout
+                        text: "Enable Auto Task Timeout"
+                    }
                 }
 
                 AlgLabel { text: "Concurrent Tasks"}
-                AlgSpinBox {
-                    id: concurrentTasks
-                    minValue: 1
-                    maxValue: 16
-                    precision: 0
-                    value: 1
-                }
-                AlgCheckBox {
-                    id: limitTasksToSlavesTaskLimit
-                    text: "Limit Tasks To Slave's Task Limit"
-                    checked: true
+                RowLayout {
+                    Layout.fillWidth: true
+                    AlgSpinBox {
+                        id: concurrentTasks
+                        minValue: 1
+                        maxValue: 16
+                        precision: 0
+                        value: 1
+                    }
+                    AlgCheckBox {
+                        id: limitTasksToSlavesTaskLimit
+                        text: "Limit Tasks To Slave's Task Limit"
+                        checked: true
+                    }
                 }
 
                 AlgLabel { text: "Machine Limit"}
-                AlgSpinBox {
-                    id: machineLimit
-                    minValue: 0
-                    maxValue: 1000000
-                    precision: 0
-                    value: 0
-                }
-                AlgCheckBox {
-                    id: isBlackList
-                    text: "Machine List Is A Blacklist"
+                RowLayout {
+                    Layout.fillWidth: true
+                    AlgSpinBox {
+                        id: machineLimit
+                        minValue: 0
+                        maxValue: 1000000
+                        precision: 0
+                        value: 0
+                    }
+                    AlgCheckBox {
+                        id: isBlackList
+                        text: "Machine List Is A Blacklist"
+                    }
                 }
 
                 AlgLabel { text: "Machine List"}
                 RowLayout {
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextInput { id: machineList; Layout.fillWidth: true; Layout.fillHeight: true}
+                    AlgTextInput { id: machineList; Layout.fillWidth: true}
                     AlgButton {
                         id: machineListButton
                         text: "..."
@@ -260,10 +262,9 @@ AlgDialog
 
                 AlgLabel { text: "Limits"}
                 RowLayout {
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextInput { id: limits; Layout.fillWidth: true; Layout.fillHeight: true}
+                    AlgTextInput { id: limits; Layout.fillWidth: true}
                     AlgButton {
                         id: limitsButton
                         text: "..."
@@ -273,10 +274,9 @@ AlgDialog
 
                 AlgLabel { text: "Dependencies"}
                 RowLayout {
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextInput { id: dependencies; Layout.fillWidth: true; Layout.fillHeight: true}
+                    AlgTextInput { id: dependencies; Layout.fillWidth: true}
                     AlgButton {
                         id: dependenciesButton
                         text: "..."
@@ -285,13 +285,16 @@ AlgDialog
                 }
 
                 AlgLabel { text: "On Job Complete"}
-                AlgComboBox {
-                    id: onJobComplete
-                    model: ["Nothing", "Archive", "Delete"]
-                }
-                AlgCheckBox {
-                    id: submitSuspended
-                    text: "Submit Job As Suspended"
+                RowLayout {
+                    Layout.fillWidth: true
+                    AlgComboBox {
+                        id: onJobComplete
+                        model: ["Nothing", "Archive", "Delete"]
+                    }
+                    AlgCheckBox {
+                        id: submitSuspended
+                        text: "Submit Job As Suspended"
+                    }
                 }
             }
 
@@ -322,7 +325,7 @@ AlgDialog
                 RowLayout {
                     Layout.fillWidth: true
 
-                    AlgTextInput { id: presetPath; Layout.fillWidth: true; Layout.fillHeight: true; text:"x:/main/Personal/DavidF/Substance/Puppet UDIM version.spexp"}
+                    AlgTextInput { id: presetPath; Layout.fillWidth: true; text:"x:/main/Personal/DavidF/Substance/Puppet UDIM version.spexp"}
                     AlgButton {
                         id: browsePresetButton
                         text: "Browse"
