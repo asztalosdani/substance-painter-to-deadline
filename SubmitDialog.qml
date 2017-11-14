@@ -137,7 +137,7 @@ AlgDialog
         id: content
         color: "transparent"
         parent: contentItem
-//        anchors.fill: parent
+        anchors.fill: parent
         anchors.margins: 12
         anchors {
             top: parent.top
@@ -147,10 +147,6 @@ AlgDialog
 
         ColumnLayout {
             anchors.fill: parent
-//            Rectangle {
-//                color: "red"
-//                anchors.fill: parent
-//            }
 
             Separator {
                 text: "Job Description"
@@ -158,21 +154,15 @@ AlgDialog
 
             GridLayout {
                 columns: 2
-//                Layout.fillWidth: true
-//                anchors {
-////                    top: parent.top
-//                    left: parent.left
-//                    right: parent.right
-//                }
 
                 AlgLabel { text: "Job Name"}
-                AlgTextEdit { id: jobName; Layout.fillWidth: true}
+                AlgTextInput { id: jobName; Layout.fillWidth: true}
 
                 AlgLabel { text: "Comment"}
-                AlgTextEdit { id: comment; Layout.fillWidth: true}
+                AlgTextInput { id: comment; Layout.fillWidth: true}
 
                 AlgLabel { text: "Department"}
-                AlgTextEdit { id: department; Layout.fillWidth: true}
+                AlgTextInput { id: department; Layout.fillWidth: true}
             }
 
             Separator {
@@ -260,7 +250,7 @@ AlgDialog
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextEdit { id: machineList; Layout.fillWidth: true; Layout.fillHeight: true}
+                    AlgTextInput { id: machineList; Layout.fillWidth: true; Layout.fillHeight: true}
                     AlgButton {
                         id: machineListButton
                         text: "..."
@@ -273,7 +263,7 @@ AlgDialog
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextEdit { id: limits; Layout.fillWidth: true; Layout.fillHeight: true}
+                    AlgTextInput { id: limits; Layout.fillWidth: true; Layout.fillHeight: true}
                     AlgButton {
                         id: limitsButton
                         text: "..."
@@ -286,7 +276,7 @@ AlgDialog
                     Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextEdit { id: dependencies; Layout.fillWidth: true; Layout.fillHeight: true}
+                    AlgTextInput { id: dependencies; Layout.fillWidth: true; Layout.fillHeight: true}
                     AlgButton {
                         id: dependenciesButton
                         text: "..."
@@ -310,14 +300,17 @@ AlgDialog
             }
 
             GridLayout {
-                columns: 3
+                columns: 2
 
-                AlgLabel { text: "Export Path"}
+                AlgLabel { id: exportLabel; text: "Export Path"}
                 RowLayout {
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextEdit { id: exportPath; Layout.fillWidth: true; Layout.fillHeight: true; text:"c:/temp/substance_export"}
+                    AlgTextInput {
+                        id: exportPath
+                        Layout.fillWidth: true
+                        text:"c:/temp/substance_export"
+                    }
                     AlgButton {
                         id: browseExportButton
                         text: "Browse"
@@ -327,10 +320,9 @@ AlgDialog
 
                 AlgLabel { text: "Preset Path"}
                 RowLayout {
-                    Layout.columnSpan: 2
                     Layout.fillWidth: true
 
-                    AlgTextEdit { id: presetPath; Layout.fillWidth: true; Layout.fillHeight: true; text:"x:/main/Personal/DavidF/Substance/Puppet UDIM version.spexp"}
+                    AlgTextInput { id: presetPath; Layout.fillWidth: true; Layout.fillHeight: true; text:"x:/main/Personal/DavidF/Substance/Puppet UDIM version.spexp"}
                     AlgButton {
                         id: browsePresetButton
                         text: "Browse"
@@ -343,6 +335,8 @@ AlgDialog
                     id: format
                     model: ["bmp", "ico", "jpeg", "jng", "pbm", "pgm", "ppm", "png", "targa", "tiff", "wbmp", "xpm", "gif", "hdr", "exr", "j2k", "jpeg-2000", "pfm", "psd"]
                 }
+
+                AlgLabel { text: "Bit Depth"}
                 AlgComboBox {
                     id: bitDepthComboBox
                     model: ["8bit", "16bit", "32bit"]
@@ -356,12 +350,8 @@ AlgDialog
                 model: ListModel {id: dataModel}
                 delegate: dataDelegate
             }
-
-
         }
-
     }
-
 
 
     Component {
