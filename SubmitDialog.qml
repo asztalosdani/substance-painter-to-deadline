@@ -318,6 +318,10 @@ AlgDialog
                         id: browseExportButton
                         text: "Browse"
                         Layout.maximumWidth: 50
+                        onClicked: {
+                            exportPathDialog.folder = alg.fileIO.localFileToUrl(exportPath.text)
+                            exportPathDialog.open()
+                        }
                     }
                 }
 
@@ -330,6 +334,11 @@ AlgDialog
                         id: browsePresetButton
                         text: "Browse"
                         Layout.maximumWidth: 50
+                        onClicked: {
+                            var path = presetPath.text.substr(0, presetPath.text.lastIndexOf("/"))
+                            presetFileDialog.folder = alg.fileIO.localFileToUrl(path)
+                            presetFileDialog.open()
+                        }
                     }
                 }
 
@@ -366,6 +375,24 @@ AlgDialog
                 checked: selected
                 onClicked: {dataModel.setProperty(index, "selected", checked)}
             }
+        }
+    }
+
+    FileDialog {
+        id: presetFileDialog
+        title: "Select the export preset"
+        nameFilters: ["Substance Painter Export Preset(*.spexp)"]
+        onAccepted: {
+            presetPath.text = alg.fileIO.urlToLocalFile(fileUrl.toString())
+        }
+    }
+
+    FileDialog {
+        id: exportPathDialog
+        title: "Select the export folder"
+        selectFolder: true
+        onAccepted: {
+            exportPath.text = alg.fileIO.urlToLocalFile(fileUrl.toString())
         }
     }
 
