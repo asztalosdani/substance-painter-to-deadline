@@ -30,6 +30,10 @@ AlgDialog
         internal.submit()
     }
 
+    onVisibleChanged: {
+      if (visible) internal.initModels()
+    }
+
     QtObject {
         id: internal
 
@@ -63,7 +67,7 @@ AlgDialog
         function initDataModel(){
             dataModel.clear()
             var documentStructure = alg.mapexport.documentStructure()
-            if (documentStructure != null) {
+            if (documentStructure != null && documentStructure.materials) {
                 var materials = documentStructure.materials
                 for (var i = 0; i < materials.length; i++) {
                     var material = materials[i]
@@ -97,7 +101,7 @@ AlgDialog
                 ConcurrentTasks: concurrentTasks.value,
                 LimitConcurrentTasksToNumberOfCpus: limitTasksToSlavesTaskLimit.checked,
                 OnJobComplete: onJobComplete.currentText,
-                InitialStatus: "Suspended", // submitSuspended.checked ? "Suspended" : "Active"
+                InitialStatus: submitSuspended.checked ? "Suspended" : "Active"
                 TaskTimeoutMinutes: taskTimeout.value,
                 EnableAutoTimeout: enableAutoTaskTimeout.checked,
                 MachineLimit: machineLimit.value,
