@@ -101,7 +101,7 @@ AlgDialog
                 ConcurrentTasks: concurrentTasks.value,
                 LimitConcurrentTasksToNumberOfCpus: limitTasksToSlavesTaskLimit.checked,
                 OnJobComplete: onJobComplete.currentText,
-                InitialStatus: submitSuspended.checked ? "Suspended" : "Active"
+                InitialStatus: submitSuspended.checked ? "Suspended" : "Active",
                 TaskTimeoutMinutes: taskTimeout.value,
                 EnableAutoTimeout: enableAutoTaskTimeout.checked,
                 MachineLimit: machineLimit.value,
