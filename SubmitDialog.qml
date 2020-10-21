@@ -28,10 +28,14 @@ AlgDialog
 
     onAccepted: {
         internal.submit()
+        internal.saveConfig()
     }
 
     onVisibleChanged: {
-      if (visible) internal.initModels()
+      if (visible) {
+        internal.initModels()
+        internal.loadConfig()
+      }
     }
 
     QtObject {
@@ -53,6 +57,9 @@ AlgDialog
                 poolModel.append({text:pool})
                 secondaryPoolModel.append({text:pool})
             }
+
+            poolComboBox.currentIndex = poolComboBox.find(alg.settings.value("pool", ""))
+            secondaryPoolComboBox.currentIndex = secondaryPoolComboBox.find(alg.settings.value("secondaryPool", ""))
         }
 
         function fillGroupCombobox(groups) {
@@ -62,6 +69,8 @@ AlgDialog
                 var group = groups[i]
                 groupModel.append({text:group})
             }
+
+            groupComboBox.currentIndex = groupComboBox.find(alg.settings.value("group", ""))
         }
 
         function initDataModel(){
@@ -75,6 +84,58 @@ AlgDialog
                     dataModel.append({name:material.name, selected: true})
                 }
             }
+        }
+
+        function saveConfig() {
+            alg.settings.setValue("jobName", jobName.text)
+            alg.settings.setValue("comment", comment.text)
+            alg.settings.setValue("department", department.text)
+            alg.settings.setValue("pool", poolComboBox.currentText)
+            alg.settings.setValue("secondaryPool", secondaryPoolComboBox.currentText)
+            alg.settings.setValue("group", groupComboBox.currentText)
+            alg.settings.setValue("priority", priority.value)
+            alg.settings.setValue("taskTimeout", taskTimeout.value)
+            alg.settings.setValue("enableAutoTaskTimeout", enableAutoTaskTimeout.checked)
+            alg.settings.setValue("concurrentTasks", concurrentTasks.value)
+            alg.settings.setValue("limitTasksToSlavesTaskLimit", limitTasksToSlavesTaskLimit.checked)
+            alg.settings.setValue("machineLimit", machineLimit.value)
+            alg.settings.setValue("isBlackList", isBlackList.checked)
+            alg.settings.setValue("machineList", machineList.text)
+            alg.settings.setValue("limits", limits.text)
+            alg.settings.setValue("dependencies", dependencies.text)
+            alg.settings.setValue("onJobComplete", onJobCompleteComboBox.currentText)
+            alg.settings.setValue("submitSuspended", submitSuspended.checked)
+
+            alg.settings.setValue("preset", presetPath.text)
+            alg.settings.setValue("exportPath", exportPath.text)
+            alg.settings.setValue("format", formatComboBox.currentText)
+            alg.settings.setValue("bitDepth", bitDepthComboBox.currentText)
+        }
+
+        function loadConfig() {
+            jobName.text = alg.settings.value("jobName", "")
+            comment.text = alg.settings.value("comment", "")
+            department.text = alg.settings.value("department", "")
+            poolComboBox.currentIndex = poolComboBox.find(alg.settings.value("pool", ""))
+            secondaryPoolComboBox.currentIndex = secondaryPoolComboBox.find(alg.settings.value("secondaryPool", ""))
+            groupComboBox.currentIndex = groupComboBox.find(alg.settings.value("group", ""))
+            priority.value = alg.settings.value("priority", 50)
+            taskTimeout.value = alg.settings.value("taskTimeout", 0)
+            enableAutoTaskTimeout.checked = alg.settings.value("enableAutoTaskTimeout", false)
+            concurrentTasks.value = alg.settings.value("concurrentTasks", 1)
+            limitTasksToSlavesTaskLimit.checked = alg.settings.value("limitTasksToSlavesTaskLimit", true)
+            machineLimit.value = alg.settings.value("machineLimit", "")
+            isBlackList.checked = alg.settings.value("isBlackList", false)
+            machineList.text = alg.settings.value("machineList", "")
+            limits.text = alg.settings.value("limits", "")
+            dependencies.text = alg.settings.value("dependencies", "")
+            onJobCompleteComboBox.currentIndex = onJobCompleteComboBox.find(alg.settings.value("onJobComplete", "Nothing"))
+            submitSuspended.checked = alg.settings.value("submitSuspended", false)
+
+            presetPath.text = alg.settings.value("preset", "")
+            exportPath.text = alg.settings.value("exportPath", "")
+            formatComboBox.currentIndex = formatComboBox.find(alg.settings.value("format", ""))
+            bitDepthComboBox.currentIndex = bitDepthComboBox.find(alg.settings.value("bitDepth", ""))
         }
 
         function submit() {
@@ -94,13 +155,13 @@ AlgDialog
                 Name: jobName.text,
                 Comment: comment.text,
                 Department: department.text,
-                Pool: pool.currentText,
-                SecondaryPool: secondaryPool.currentText,
-                Group: group.currentText,
+                Pool: poolComboBox.currentText,
+                SecondaryPool: secondaryPoolComboBox.currentText,
+                Group: groupComboBox.currentText,
                 Priority: priority.value,
                 ConcurrentTasks: concurrentTasks.value,
                 LimitConcurrentTasksToNumberOfCpus: limitTasksToSlavesTaskLimit.checked,
-                OnJobComplete: onJobComplete.currentText,
+                OnJobComplete: onJobCompleteComboBox.currentText,
                 InitialStatus: submitSuspended.checked ? "Suspended" : "Active",
                 TaskTimeoutMinutes: taskTimeout.value,
                 EnableAutoTimeout: enableAutoTaskTimeout.checked,
@@ -119,7 +180,7 @@ AlgDialog
                 ProjectFile: alg.project.url(),
                 Preset: presetPath.text,
                 ExportPath: exportPath.text,
-                Format: format.currentText,
+                Format: formatComboBox.currentText,
                 TextureSets: textureSets.join(","),
                 BitDepth: bitDepth
             }
@@ -173,19 +234,19 @@ AlgDialog
 
                 AlgLabel { text: "Pool"}
                 AlgComboBox {
-                    id: pool
+                    id: poolComboBox
                     model: ListModel {id: poolModel}
                 }
 
                 AlgLabel { text: "Secondary Pool"}
                 AlgComboBox {
-                    id: secondaryPool
+                    id: secondaryPoolComboBox
                     model: ListModel {id: secondaryPoolModel}
                 }
 
                 AlgLabel { text: "Group"}
                 AlgComboBox {
-                    id: group
+                    id: groupComboBox
                     model: ListModel {id: groupModel}
                 }
 
@@ -287,7 +348,7 @@ AlgDialog
                 RowLayout {
                     Layout.fillWidth: true
                     AlgComboBox {
-                        id: onJobComplete
+                        id: onJobCompleteComboBox
                         model: ["Nothing", "Archive", "Delete"]
                     }
                     AlgCheckBox {
@@ -343,7 +404,7 @@ AlgDialog
 
                 AlgLabel { text: "Format"}
                 AlgComboBox {
-                    id: format
+                    id: formatComboBox
                     model: ["bmp", "ico", "jpeg", "jng", "pbm", "pgm", "ppm", "png", "targa", "tiff", "wbmp", "xpm", "gif", "hdr", "exr", "j2k", "jpeg-2000", "pfm", "psd"]
                 }
 
